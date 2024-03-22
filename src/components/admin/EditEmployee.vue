@@ -34,13 +34,12 @@
               <MDBInput label="Last Name" size="lg" type="text" v-model="lastName" required />
             </div>
           </div>
-  
           <div class="row mt-3">
             <div class="col">
               <MDBInput label="Email" size="lg" type="email" v-model="email" required />
             </div>
           </div>
-  
+
           <div class="row my-3 align-items-center">
             <div class="col small fw-semibold">Other Information</div>
             <div class="col-9 d-none d-md-block">
@@ -61,6 +60,7 @@
             </div>
             <p class="text-danger fst-italic small" v-if="isAtLeastOneChecked">Please select at least one benefit.</p>
           </div>
+
           <div class="row mt-3" v-if="isContract">
             <div class="col">
               <MDBInput label="Contract End Date" size="lg" type="date" v-model="contractEndDate" required />
@@ -78,9 +78,9 @@
         </MDBModalFooter>
       </form>
     </MDBModal>
-  </template>
+</template>
   
-  <script setup>
+<script setup>
     import {
       MDBModal,
       MDBModalHeader,
@@ -128,6 +128,8 @@
   
     const showTypeError = ref(false);
     const isAtLeastOneChecked = ref(false);
+
+    const emit = defineEmits(['action-alert']);
   
     watch(empType, (newValue, oldValue) => {
       if (newValue === 'regular') {
@@ -154,17 +156,13 @@
       getData();
     });
 
-  
     const closeModal = () => {
       getData();
       editEmployeeModal.value = false;
       showTypeError.value = false;
     }
-
-    const emit = defineEmits(['action-alert']);
     
     const editEmployee = () => {
-  
       if (!empType.value) {
         showTypeError.value = true;
         return;
@@ -176,7 +174,7 @@
         return;
       }
 
-        if (selectedBenefits.value.length > 0) {
+      if (selectedBenefits.value.length > 0) {
           const regularEmp = {
             id: props.empDetails.id,
             firstName: firstName.value,
@@ -190,8 +188,6 @@
           employeeStore.editEmployee(props.empDetails.id, regularEmp)
           emit('action-alert', "Updated")
         }
-  
-  
       } else {
         const contractEmp = {
           id: props.empDetails.id,
@@ -205,9 +201,8 @@
   
         employeeStore.editEmployee(props.empDetails.id, contractEmp)  
         emit('action-alert', "Updated")
-
       }
-  
+
       closeModal();
     }
 
@@ -220,6 +215,7 @@
       if(props.empDetails.type == "regular"){
         numberOfLeaves.value = props.empDetails.numberOfLeaves;
         selectedBenefits.value = props.empDetails.benefits;
+
       }else{
         contractEndDate.value = props.empDetails.contractEndDate;
         project.value = props.empDetails.project;
@@ -230,9 +226,9 @@
         getData();
     })
 
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
     .custom-card {
       background-color: #40C13A;
       cursor: pointer;
@@ -246,4 +242,4 @@
     input[type="checkbox"] {
       transform: scale(1.5);
     }
-  </style>
+</style>

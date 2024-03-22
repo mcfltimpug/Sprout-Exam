@@ -6,9 +6,7 @@
 </template>
 
 <script setup>
-
 const props = defineProps({
     action: String,
 })
-
 </script>

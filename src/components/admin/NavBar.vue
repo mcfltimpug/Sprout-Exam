@@ -13,9 +13,6 @@
         <MDBBtn color="secondary fw-semibold" @click="logout">Log Out</MDBBtn>
       </div>
     </div>
-
-
-
   </MDBNavbar>
 </template>
 
@@ -33,14 +30,12 @@
   } from "vue-router";
 
   const {
-    logoutAdmin,
-    isAuthenticated
+    logoutAdmin
   } = useAdminStore();
   const router = useRouter();
 
   const logout = () => {
     logoutAdmin();
-
     const isLoggedIn = JSON.parse(localStorage.getItem('isAuthenticated'));
 
     if (isLoggedIn == false) {

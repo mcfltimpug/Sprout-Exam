@@ -19,7 +19,6 @@
             </div>
         </MDBCardBody>
     </MDBCard>
-
 </template>
 
 <script setup>

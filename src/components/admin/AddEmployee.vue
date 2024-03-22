@@ -5,7 +5,6 @@
       Employee</MDBCardBody>
   </MDBCard>
   
-
   <MDBModal id="newEmployeeModal" tabindex="-1" labelledby="newEmployeeModalTitle" v-model="newEmployeeModal" centered
     staticBackdrop class="modal-lg">
     <MDBModalHeader class="headerColor">
@@ -18,7 +17,7 @@
             <p class="me-4 fw-semibold small">Employee Type: </p>
             <MDBRadio label="Regular" value="regular" v-model="empType" inline />
             <MDBRadio label="Contractual" value="contractual" v-model="empType" />
-            <p class="text-danger fst-italic small" v-if="showTypeError">Please select an employee type.</p>
+            <p class="text-danger fst-italic small" v-if="isTypeSelected">Please select an employee type.</p>
           </div>
         </div>
         <div class="row align-items-center my-3">
@@ -36,7 +35,6 @@
             <MDBInput label="Last Name" size="lg" type="text" v-model="lastName" required />
           </div>
         </div>
-
         <div class="row mt-3">
           <div class="col">
             <MDBInput label="Email" size="lg" type="email" v-model="email" required />
@@ -63,6 +61,7 @@
           </div>
           <p class="text-danger fst-italic small" v-if="isAtLeastOneChecked">Please select at least one benefit.</p>
         </div>
+        
         <div class="row mt-3" v-if="isContract">
           <div class="col">
             <MDBInput label="Contract End Date" size="lg" type="date" v-model="contractEndDate" required />
@@ -107,17 +106,14 @@
   } from '../../stores/employees';
 
   const employeeStore = useEmployeeStore();
-
+  //employee data
   const empType = ref();
   const firstName = ref();
   const lastName = ref();
   const email = ref();
-
   const numberOfLeaves = ref();
-
   const benefitsItems = ref(['HMO', 'Holiday Pay', 'Gov Contributions', 'Training', '13th Month Pay']);
   const selectedBenefits = ref([]);
-
   const contractEndDate = ref();
   const project = ref();
 
@@ -125,20 +121,22 @@
   const isRegular = ref(false);
   const isContract = ref(false);
 
-  const showTypeError = ref(false);
+  //for radio and checkbox validation
+  const isTypeSelected = ref(false);
   const isAtLeastOneChecked = ref(false);
 
+  //alert
   const emit = defineEmits(['show-alert']);
 
   watch(empType, (newValue, oldValue) => {
     if (newValue === 'regular') {
       isRegular.value = true;
       isContract.value = false;
-      showTypeError.value = false;
+      isTypeSelected.value = false;
     } else if (newValue === 'contractual') {
       isContract.value = true;
       isRegular.value = false;
-      showTypeError.value = false;
+      isTypeSelected.value = false;
     } else {
       isRegular.value = false;
       isContract.value = false;
@@ -166,14 +164,13 @@
     clearForm();
     isRegular.value = false;
     isContract.value = false;
+    isTypeSelected.value = false;
     newEmployeeModal.value = false;
-    showTypeError.value = false;
   }
 
   const addEmployee = () => {
-
     if (!empType.value) {
-      showTypeError.value = true;
+      isTypeSelected.value = true;
       return;
     }
 
@@ -182,7 +179,8 @@
       isAtLeastOneChecked.value = true;
       return;
     }
-      if (selectedBenefits.value.length > 0) {
+
+    if (selectedBenefits.value.length > 0) {
         const regularEmp = {
           firstName: firstName.value,
           lastName: lastName.value,
@@ -194,12 +192,8 @@
 
         employeeStore.addEmployee(regularEmp);
         emit('show-alert', 'Added')
-        console.log("Added Regular Employee")
       }
-
-
     } else {
-      console.log("addingContractual")
       const contractEmp = {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -211,7 +205,6 @@
 
       employeeStore.addEmployee(contractEmp);
       emit('show-alert', 'Added')
-      console.log("Added Contractual Employee")
     }
 
     closeModal();

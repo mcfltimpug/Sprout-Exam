@@ -1,13 +1,13 @@
 <template>
-    <MDBBtn color="info" @click="exampleModalCenter = true">
+    <MDBBtn color="info" @click="viewEmployeeModal = true">
         <i class="fas fa-eye"></i>
         View
     </MDBBtn>
 
-    <MDBModal id="exampleModalCenter" tabindex="-1" labelledby="exampleModalCenterTitle" v-model="exampleModalCenter"
+    <MDBModal id="viewEmployeeModal" tabindex="-1" labelledby="viewEmployeeModalTitle" v-model="viewEmployeeModal" staticBackdrop
         centered class="modal-lg">
         <MDBModalHeader :style="{ background: headerBgGradient }" class="text-white">
-            <MDBModalTitle id="exampleModalCenterTitle">
+            <MDBModalTitle id="viewEmployeeModalTitle" >
                 <i class="fas fa-eye"></i>
                 <span class="ms-2">View Employee</span></MDBModalTitle>
         </MDBModalHeader>
@@ -127,7 +127,7 @@
         computed, watch
     } from "vue";
 
-    const exampleModalCenter = ref(false);
+    const viewEmployeeModal = ref(false);
     const props = defineProps({
         empDetails: Object,
     });

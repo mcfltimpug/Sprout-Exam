@@ -11,10 +11,8 @@
         <div class="d-flex gap-2 justify-content-center">
             <ViewEmployee :empDetails="employee"/>
             <EditEmployee :empDetails="employee" @action-alert="handleAlert"/>
-            <DeleteEmployee :empDetails="employee" @action-alert="handleAlert"/>
-            
-        </div>
-        
+            <DeleteEmployee :empDetails="employee" @action-alert="handleAlert"/>    
+        </div>    
       </MDBCardBody>
     </MDBCard>
   </template>
@@ -25,7 +23,7 @@ import ViewEmployee from '../admin/ViewEmployee.vue'
 import DeleteEmployee from '../admin/DeleteEmployee.vue'
 import EditEmployee from '../admin/EditEmployee.vue'
 
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 
 const props = defineProps({
   employee: Object

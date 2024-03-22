@@ -31,11 +31,8 @@
     MDBInput,
     MDBBtn
   } from "mdb-vue-ui-kit";
-
   import {
-    ref,
-    onMounted,
-    watch
+    ref
   } from 'vue'
   import {
     useAdminStore
@@ -49,10 +46,9 @@
   const router = useRouter();
   const showError = ref(false);
 
-  const { loginAdmin, isAuthenticated } = useAdminStore();
+  const { loginAdmin } = useAdminStore();
 
   const login = () =>{
-
     loginAdmin(username.value, password.value);
     const isLoggedIn = JSON.parse(localStorage.getItem('isAuthenticated'));
 

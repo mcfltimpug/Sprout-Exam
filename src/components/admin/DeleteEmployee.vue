@@ -34,9 +34,6 @@
         MDBBtn,
         MDBCard,
         MDBCardBody,
-        MDBInput,
-        MDBCheckbox,
-        MDBTextarea,
     } from "mdb-vue-ui-kit";
     import {
         ref,
@@ -44,9 +41,12 @@
         computed
     } from "vue";
     import { useEmployeeStore } from "../../stores/employees";
-    const employeeStore = useEmployeeStore();
 
+    const employeeStore = useEmployeeStore();
     const deleteEmployeeModal = ref(false);
+
+    const emit = defineEmits(['action-alert']);
+
     const props = defineProps({
         empDetails: Object
     });
@@ -60,8 +60,6 @@
             return `#40C13A`
         }
     });
-
-    const emit = defineEmits(['action-alert']);
 
     const deleteEmployee = () =>{
         employeeStore.deleteEmployee(props.empDetails.id);
