@@ -18,23 +18,8 @@
             </nav>
         </div>
         <div class="row gap-3 gap-md-0">
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
-                <Employee />
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
-                <Employee />
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
-                <Employee />
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
-                <Employee />
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
-                <Employee />
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
-                <Employee />
+            <div class="col-12 col-md-6 col-lg-4 mb-3" v-for="employee in allEmployees" :key="employee.id">
+                <Employee :employee="employee" />
             </div>
         </div>
         
@@ -57,12 +42,25 @@
     import AddEmployee from '@/components/admin/AddEmployee.vue';
     import EmployeeStats from '@/components/admin/EmployeeStats.vue';
     import Employee from '@/components/admin/Employee.vue';
+    import { ref, watch, onMounted } from "vue";
 
     import {
         MDBPagination,
         MDBPageNav,
         MDBPageItem, MDBBreadcrumb, MDBBreadcrumbItem
     } from 'mdb-vue-ui-kit';
+
+    import { useEmployeeStore } from '@/stores/employees';
+    const employeeStore = useEmployeeStore();
+    const allEmployees = ref();
+
+   onMounted(() => {
+     employeeStore.getAllEmployees();
+   })
+
+   watch(() => employeeStore.employees, (emps) => {
+        allEmployees.value = emps;
+   })
 </script>
 
 <style scoped>
