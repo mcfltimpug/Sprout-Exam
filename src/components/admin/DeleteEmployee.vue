@@ -61,8 +61,11 @@
         }
     });
 
+    const emit = defineEmits(['action-alert']);
+
     const deleteEmployee = () =>{
         employeeStore.deleteEmployee(props.empDetails.id);
+        emit('action-alert', "Deleted")
         deleteEmployeeModal.value = false;
     }
 </script>

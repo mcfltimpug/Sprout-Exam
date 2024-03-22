@@ -124,7 +124,7 @@
     import {
         ref,
         onMounted,
-        computed
+        computed, watch
     } from "vue";
 
     const exampleModalCenter = ref(false);
@@ -158,6 +158,10 @@
 
     onMounted(() => {
         checkType();
+    });
+
+    watch(() => props.empDetails, () => {
+      checkType();
     });
 </script>
 

@@ -160,7 +160,9 @@
       editEmployeeModal.value = false;
       showTypeError.value = false;
     }
-  
+
+    const emit = defineEmits(['action-alert']);
+    
     const editEmployee = () => {
   
       if (!empType.value) {
@@ -186,6 +188,7 @@
           }
   
           employeeStore.editEmployee(props.empDetails.id, regularEmp)
+          emit('action-alert', "Updated")
         }
   
   
@@ -201,6 +204,7 @@
         }
   
         employeeStore.editEmployee(props.empDetails.id, contractEmp)  
+        emit('action-alert', "Updated")
 
       }
   

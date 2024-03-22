@@ -128,6 +128,8 @@
   const showTypeError = ref(false);
   const isAtLeastOneChecked = ref(false);
 
+  const emit = defineEmits(['show-alert']);
+
   watch(empType, (newValue, oldValue) => {
     if (newValue === 'regular') {
       isRegular.value = true;
@@ -191,6 +193,7 @@
         }
 
         employeeStore.addEmployee(regularEmp);
+        emit('show-alert', 'Added')
         console.log("Added Regular Employee")
       }
 
@@ -207,6 +210,7 @@
       }
 
       employeeStore.addEmployee(contractEmp);
+      emit('show-alert', 'Added')
       console.log("Added Contractual Employee")
     }
 

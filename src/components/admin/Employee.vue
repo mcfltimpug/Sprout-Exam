@@ -10,8 +10,8 @@
 
         <div class="d-flex gap-2 justify-content-center">
             <ViewEmployee :empDetails="employee"/>
-            <EditEmployee :empDetails="employee"/>
-            <DeleteEmployee :empDetails="employee"/>
+            <EditEmployee :empDetails="employee" @action-alert="handleAlert"/>
+            <DeleteEmployee :empDetails="employee" @action-alert="handleAlert"/>
             
         </div>
         
@@ -31,6 +31,8 @@ const props = defineProps({
   employee: Object
 });
 
+const emit = defineEmits(['show-alert']);
+
 const fullName = computed(()=> props.employee.firstName + " " + props.employee.lastName)
 
 const headerBgGradient = computed(() => {
@@ -40,4 +42,11 @@ const headerBgGradient = computed(() => {
         return `#40C13A`
     }
 });
+
+const actionDone = ref('');
+
+const handleAlert = (action) =>{
+    actionDone.value = action;
+    emit('show-alert', actionDone.value)
+}
 </script>

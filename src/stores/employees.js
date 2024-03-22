@@ -20,25 +20,25 @@ export const useEmployeeStore = defineStore('employee', () => {
                lastName: "Timpug",
                email: "cfl.timpug@gmail.com",
                numberOfLeaves: 10,
-               benefits: ["HMO", "Rice Subsidy", "Allowances"],
+               benefits: ["HMO", "Holiday Pay", "Gov Contributions"],
                type: "regular"
             },
             {
                id: 2,
-               firstName: "Luizy",
-               lastName: "Harvey",
-               email: "harveyluizy@gmail.com",
+               firstName: "Juan",
+               lastName: "Villanueva",
+               email: "juanvillanueva@gmail.com",
                contractEndDate: "2024-05-25",
                project: "Empowr",
                type: "contractual"
             },
             {
                id: 3,
-               firstName: "Cho Seungyoun",
-               lastName: "Woodz",
-               email: "wwoodz@gmail.com",
+               firstName: "Mikaela",
+               lastName: "Dela Cruz",
+               email: "mikaydelacruz@gmail.com",
                numberOfLeaves: 14,
-               benefits: ["HMO", "Allowances"],
+               benefits: ["HMO", "Holiday Pay"],
                type: "regular"
             }
          ]
