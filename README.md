@@ -1,29 +1,37 @@
-# sprout-empowr
+# EMPOWR - Employee Management System
 
-This template should help get you started developing with Vue 3 in Vite.
+Confident Management, Stronger Workforce
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## About
+EMPOWR has been developed as part of the Technical Assessment for Sprout Solutions. It is a straightforward yet powerful system that incorporates CRUD (Create, Read, Update, Delete) functionality along with a secure login feature. Designed to simplify employee management tasks.
 
 ## Project Setup
 
-```sh
-npm install
-```
+To get started with this project, follow these steps:
 
-### Compile and Hot-Reload for Development
+1. Clone the repository:
 
-```sh
-npm run dev
-```
+   ```bash
+   git clone https://github.com/mcfltimpug/Sprout-Exam.git
+   
+2. Navigate to the project directory:
 
-### Compile and Minify for Production
+    ```bash
+    cd Sprout-Exam
 
-```sh
-npm run build
-```
+3. Install Dependencies
+   ```bash
+    npm install
+
+4. Run project
+   ```bash
+    npm run dev
+
+## Question from Tech Exam
+
+If we are going to deploy this on production, what do you think is the next
+improvement that you will prioritize next? This can be a feature, a tech debt, or
+an architectural design.
+
+If we're planning to deploy this on production, the next improvement I would prioritize is enhancing the employee management process. One key feature to consider is implementing a dashboard with visual representation graphs such as bar charts or pie charts. Incorporating charts can contribute to data analysis, decision-making processes, increased accessibility, performance monitoring, and better understanding of information. Another improvement lies in enhancing the user interface and user experience. For instance, reducing the use of modals, employing consistent design elements, and implementing better responsive design. Lastly, implementing security measures can be beneficial for the system. It can be done by improving a more stricter form or input validation, using data encryption especially for login credentials, conducting testing, and having more secure coding practices. In summary, the next improvement for EMPOWR will be about implementing better features like charts, improving user experience, and making sure that it can address the common security threats by implementing effective measures.
+
