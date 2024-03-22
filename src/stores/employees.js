@@ -3,10 +3,13 @@ import { ref, onMounted } from 'vue'
 
 
 export const useEmployeeStore = defineStore('employee', () => {
-   const employees = ref();
+   const employees = ref([]);
 
    const storeLocalEmployees = () => {
-    const localEmployees = [
+    const existingEmployees = localStorage.getItem('currentEmployees');
+
+    if(!existingEmployees){
+         const localEmployees = [
         {
              firstName : "Christine Faith",
              lastName : "Timpug",
@@ -34,12 +37,9 @@ export const useEmployeeStore = defineStore('employee', () => {
        ]
 
        localStorage.setItem('currentEmployees', JSON.stringify(localEmployees));
+    }
+   
    }
-
-   onMounted(() => {
-        storeLocalEmployees();
-   })
-
 
    const getAllEmployees = () => {
     const employeesFromDB = JSON.parse(localStorage.getItem('currentEmployees'));
@@ -50,7 +50,18 @@ export const useEmployeeStore = defineStore('employee', () => {
     
    }
 
-   return { employees, getAllEmployees }
+   const addEmployee = (newEmployee) => {
+      employees.value.push(newEmployee);
+      localStorage.setItem('currentEmployees', JSON.stringify(employees.value));
+      console.log("Added Successfully!");
+   };
+
+   onMounted(() => {
+      storeLocalEmployees();
+      getAllEmployees();
+   });
+
+   return { employees, getAllEmployees, addEmployee };
 
 
 });
