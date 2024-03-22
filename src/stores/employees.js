@@ -59,16 +59,16 @@ export const useEmployeeStore = defineStore('employee', () => {
 
    const generateUniqueId = (employees) => {
       if (employees.length === 0) {
-          return 1;
+         return 1;
       }
-  
+
       const highestId = employees.reduce((maxId, employee) => {
-          return Math.max(maxId, parseInt(employee.id));
+         return Math.max(maxId, parseInt(employee.id));
       }, 0);
-  
+
       return highestId + 1;
-  };
-  
+   };
+
 
    const addEmployee = (newEmployee) => {
       const existingEmployees = JSON.parse(localStorage.getItem('currentEmployees')) || [];
@@ -83,11 +83,26 @@ export const useEmployeeStore = defineStore('employee', () => {
       console.log("Added Successfully!");
    };
 
+   const editEmployee = (employeeId, updatedEmployee) => {
+      const existingEmployees = JSON.parse(localStorage.getItem('currentEmployees')) || [];
+
+      const indexToEdit = existingEmployees.findIndex(emp => emp.id === employeeId);
+
+      if (indexToEdit !== -1) {
+         existingEmployees[indexToEdit] = updatedEmployee;
+         localStorage.setItem('currentEmployees', JSON.stringify(existingEmployees));
+         employees.value = existingEmployees;
+         console.log("Edited Successfully!");
+      } else {
+         console.log("Employee not found!");
+      }
+   };
+
    const deleteEmployee = (employeeId) => {
       const existingEmployees = JSON.parse(localStorage.getItem('currentEmployees')) || [];
 
       const indexToDelete = existingEmployees.findIndex(emp => emp.id === employeeId);
-            
+
       if (indexToDelete !== -1) {
          existingEmployees.splice(indexToDelete, 1);
          localStorage.setItem('currentEmployees', JSON.stringify(existingEmployees));
@@ -107,7 +122,8 @@ export const useEmployeeStore = defineStore('employee', () => {
       employees,
       getAllEmployees,
       addEmployee,
-      deleteEmployee
+      deleteEmployee,
+      editEmployee
    };
 
 

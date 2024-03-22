@@ -10,10 +10,7 @@
 
         <div class="d-flex gap-2 justify-content-center">
             <ViewEmployee :empDetails="employee"/>
-            <MDBBtn color="primary"> 
-                <i class="fas fa-pen"></i>
-                Edit
-            </MDBBtn>
+            <EditEmployee :empDetails="employee"/>
             <DeleteEmployee :empDetails="employee"/>
             
         </div>
@@ -26,6 +23,7 @@
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBBtn, MDBCardHeader, MDBIcon } from "mdb-vue-ui-kit";
 import ViewEmployee from '../admin/ViewEmployee.vue'
 import DeleteEmployee from '../admin/DeleteEmployee.vue'
+import EditEmployee from '../admin/EditEmployee.vue'
 
 import { ref, computed, onMounted } from 'vue'
 

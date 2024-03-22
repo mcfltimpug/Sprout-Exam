@@ -4,6 +4,7 @@
     <MDBCardBody class="text-center text-white fw-semibold fs-3 d-flex justify-content-center align-items-center ">New
       Employee</MDBCardBody>
   </MDBCard>
+  
 
   <MDBModal id="newEmployeeModal" tabindex="-1" labelledby="newEmployeeModalTitle" v-model="newEmployeeModal" centered
     staticBackdrop class="modal-lg">

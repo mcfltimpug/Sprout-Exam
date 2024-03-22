@@ -5,7 +5,7 @@
     </MDBBtn>
 
     <MDBModal id="deleteEmployeeModal" tabindex="-1" labelledby="deleteEmployeeModalTitle" v-model="deleteEmployeeModal"
-        centered class="modal">
+        centered staticBackdrop class="modal">
         <form @submit.prevent="deleteEmployee">
             <MDBModalHeader :style="{ background: headerBgGradient }" class="text-white">
                 <MDBModalTitle id="deleteEmployeeModalTitle">
