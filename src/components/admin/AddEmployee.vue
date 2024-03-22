@@ -57,7 +57,7 @@
           <div class="col d-flex flex-column flex-sm-row flex-wrap gap-4">
             <p class="small fw-semibold">Benefits:</p>
             <label v-for="(item, index) in benefitsItems" :key="index">
-              <input type="checkbox" :value="item" v-model="selectedBenefits" > {{ item }}
+              <input type="checkbox" :value="item" v-model="selectedBenefits"> {{ item }}
             </label>
           </div>
           <p class="text-danger fst-italic small" v-if="isAtLeastOneChecked">Please select at least one benefit.</p>
@@ -97,9 +97,13 @@
   } from 'mdb-vue-ui-kit';
   import {
     ref,
-    watch, onMounted, computed
+    watch,
+    onMounted,
+    computed
   } from 'vue';
-  import { useEmployeeStore } from '../../stores/employees';
+  import {
+    useEmployeeStore
+  } from '../../stores/employees';
 
   const employeeStore = useEmployeeStore();
 
@@ -128,11 +132,11 @@
       isRegular.value = true;
       isContract.value = false;
       showTypeError.value = false;
-    } else if(newValue === 'contractual') {
+    } else if (newValue === 'contractual') {
       isContract.value = true;
       isRegular.value = false;
       showTypeError.value = false;
-    }else{
+    } else {
       isRegular.value = false;
       isContract.value = false;
     }
@@ -150,7 +154,7 @@
     lastName.value = '';
     email.value = '';
     selectedBenefits.value = [];
-    numberOfLeaves.value = null;
+    numberOfLeaves.value = 0;
     contractEndDate.value = '';
     project.value = '';
   }
@@ -170,25 +174,28 @@
       return;
     }
 
-    if(selectedBenefits.value.length <= 0){
+    if (empType.value == "regular") {
+      if (selectedBenefits.value.length <= 0) {
       isAtLeastOneChecked.value = true;
       return;
     }
+      if (selectedBenefits.value.length > 0) {
+        const regularEmp = {
+          firstName: firstName.value,
+          lastName: lastName.value,
+          email: email.value,
+          numberOfLeaves: parseInt(numberOfLeaves.value),
+          benefits: selectedBenefits.value,
+          type: empType.value
+        }
 
-    if (empType.value == "regular" && selectedBenefits.value.length > 0) {
-      const regularEmp = {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        email: email.value,
-        numberOfLeaves: numberOfLeaves.value,
-        benefits: selectedBenefits.value,
-        type: empType.value
+        employeeStore.addEmployee(regularEmp);
+        console.log("Added Regular Employee")
       }
 
-      employeeStore.addEmployee(regularEmp);
-      console.log("Added Regular Employee")
 
-    } else{
+    } else {
+      console.log("addingContractual")
       const contractEmp = {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -212,13 +219,12 @@
     cursor: pointer;
   }
 
-  .headerColor{
+  .headerColor {
     background-color: #40C13A;
     color: white;
   }
 
-  input[type="checkbox"]{
+  input[type="checkbox"] {
     transform: scale(1.5);
   }
-  
-</style> 
+</style>

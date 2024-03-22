@@ -14,10 +14,7 @@
                 <i class="fas fa-pen"></i>
                 Edit
             </MDBBtn>
-            <MDBBtn color="danger"> 
-                <i class="fas fa-trash"></i>
-                Delete
-            </MDBBtn>
+            <DeleteEmployee :empDetails="employee"/>
             
         </div>
         
@@ -28,16 +25,13 @@
 <script setup>
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBBtn, MDBCardHeader, MDBIcon } from "mdb-vue-ui-kit";
 import ViewEmployee from '../admin/ViewEmployee.vue'
+import DeleteEmployee from '../admin/DeleteEmployee.vue'
 
 import { ref, computed, onMounted } from 'vue'
 
 const props = defineProps({
   employee: Object
 });
-
-onMounted(() => {
-    console.log(props.employee.firstName)
-})
 
 const fullName = computed(()=> props.employee.firstName + " " + props.employee.lastName)
 

@@ -19,7 +19,7 @@
         </div>
         <div class="row gap-3 gap-md-0">
             <div class="col-12 col-md-6 col-lg-4 mb-3" v-for="employee in allEmployees" :key="employee.id">
-                <Employee :employee="employee" />
+                <Employee :employee="employee"/>
             </div>
         </div>
         
