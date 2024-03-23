@@ -13,8 +13,10 @@ To get started with this project, follow these steps:
 
    ```bash
    git clone https://github.com/mcfltimpug/Sprout-Exam.git
-   
-2. Navigate to the project directory:
+
+### Frontend
+
+2. Navigate to the frontend directory:
 
     ```bash
     cd Sprout-Exam
@@ -23,9 +25,29 @@ To get started with this project, follow these steps:
    ```bash
     npm install
 
-4. Run project
+4. Run Frontend
    ```bash
     npm run dev
+
+### Backend
+
+5. Navigate to backend directory (Sprout-Exam/backend):
+   ```bash
+    cd backend
+
+6. Install Dependencies
+   ```bash
+    pip install -r requirements.txt
+
+7. Run Backend
+   ```bash
+    uvicorn employees:app --reload
+
+### Usage
+Go to http://localhost:5173/ to use the system. Login with the following credentials:
+
+    username: admin
+    password: password
 
 ## Question from Tech Exam
 
