@@ -69,7 +69,7 @@ export const useEmployeeStore = defineStore('employees', () => {
          
          if (index !== -1) {
             const deletedEmployee = employees.value.splice(index, 1)[0];
-            console.log("Employee deleted successfully: ", deletedEmployee);
+            console.log("Employee Deleted Successfully");
          } else {
             console.error("Employee not found in the store.");
          }

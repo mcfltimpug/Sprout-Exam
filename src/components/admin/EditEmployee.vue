@@ -49,6 +49,7 @@
           <div class="row mt-3" v-if="isRegular">
             <div class="col">
               <MDBInput label="Number of Leaves" size="lg" type="number" v-model="numberOfLeaves" required />
+              <p class="text-danger fst-italic small" v-if="isNumberPositive" >Please input positive numbers only.</p>
             </div>
           </div>
           <div class="row mt-3" v-if="isRegular">
@@ -128,6 +129,7 @@
   
     const showTypeError = ref(false);
     const isAtLeastOneChecked = ref(false);
+    const isNumberPositive = ref(false);
 
     const emit = defineEmits(['action-alert']);
   
@@ -152,6 +154,14 @@
       }
     });
 
+    watch(numberOfLeaves, (newValue) => {
+      if (newValue < 0) {
+        isNumberPositive.value = true;
+      } else {
+        isNumberPositive.value = false;
+      }
+    });
+
     watch(() => props.empDetails, () => {
       getData();
     });
@@ -171,6 +181,11 @@
       if (empType.value == "regular") {
         if (selectedBenefits.value.length <= 0) {
         isAtLeastOneChecked.value = true;
+        return;
+      }
+
+      if(numberOfLeaves.value < 0){
+        isNumberPositive.value = true;
         return;
       }
 

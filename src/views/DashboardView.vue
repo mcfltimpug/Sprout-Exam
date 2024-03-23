@@ -137,9 +137,20 @@
         }, 3000);
     };
 
+    watch(isEmpty, (isEmptyValue) => {
+        if (isEmptyValue) {
+            if (currentPage.value > 1) {
+                goToPage(currentPage.value - 1);
+            } else {
+                filterByType(null);
+            }
+        }
+    });
+
     onMounted(() => {
         employeeStore.getAllEmployees();
     });
+    
 </script>
 
 <style scoped>
