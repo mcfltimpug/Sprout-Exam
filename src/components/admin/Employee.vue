@@ -31,7 +31,7 @@ const props = defineProps({
 
 const emit = defineEmits(['show-alert']);
 
-const fullName = computed(()=> props.employee.firstName + " " + props.employee.lastName)
+const fullName = computed(()=> props.employee.first_name + " " + props.employee.last_name)
 
 const headerBgGradient = computed(() => {
     if(props.employee.type == "regular"){

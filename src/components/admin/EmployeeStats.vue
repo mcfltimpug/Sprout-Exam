@@ -1,5 +1,5 @@
 <template>
-    <MDBCard class="" border="success" shadow="0" bg="white" >
+    <MDBCard class="" border="success" shadow="0" bg="white">
         <MDBCardBody class="d-flex flex-column flex-sm-row align-items-center justify-content-center gap-5">
             <div class="d-block d-sm-none d-lg-block">
                 <img src="../../assets/stats-icon.png" class="img-fluid">
@@ -26,40 +26,22 @@
         MDBCard,
         MDBCardBody
     } from "mdb-vue-ui-kit";
-    import { ref, onMounted, watch } from "vue";
-    import { useEmployeeStore } from "@/stores/employees";
+    import {
+        ref,
+        onMounted,
+        watch,
+        computed
+    } from "vue";
+    import {
+        useEmployeeStore
+    } from "@/stores/employees";
 
     const employeeStore = useEmployeeStore();
-    const employees = ref([]);
 
-    const totalEmployees = ref(0);
-    const totalRegulars = ref(0);
-    const totalContractuals = ref(0);
+    const totalEmployees = computed(() => employeeStore.employees.length);
+    const totalRegulars = computed(() => employeeStore.employees.filter(employee => employee.type === 'regular')
+    .length);
+    const totalContractuals = computed(() => employeeStore.employees.filter(employee => employee.type === 'contractual')
+        .length);
 
-    onMounted(() => {
-        employeeStore.getAllEmployees()
-        employees.value =  employeeStore.employees;
-        countTotalEmployees();
-        countTotalRegulars();
-        countTotalContractuals();
-    });
-
-    watch(() => employeeStore.employees, (newValue) => {
-        employees.value = newValue;
-        countTotalEmployees();
-        countTotalRegulars();
-        countTotalContractuals();
-    });
-
-    const countTotalEmployees = () => {
-        totalEmployees.value = employees.value.length;
-    };
-
-    const countTotalRegulars = () => {
-        totalRegulars.value = employees.value.filter(employee => employee.type === 'regular').length;
-    };
-
-    const countTotalContractuals = () => {
-        totalContractuals.value = employees.value.filter(employee => employee.type === 'contractual').length;
-    };
 </script>

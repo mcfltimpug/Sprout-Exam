@@ -49,6 +49,7 @@
           <div class="row mt-3" v-if="isRegular">
             <div class="col">
               <MDBInput label="Number of Leaves" size="lg" type="number" v-model="numberOfLeaves" required />
+              <p class="text-danger fst-italic small" v-if="isNumberPositive" >Please input positive numbers only.</p>
             </div>
           </div>
           <div class="row mt-3" v-if="isRegular">
@@ -128,6 +129,7 @@
   
     const showTypeError = ref(false);
     const isAtLeastOneChecked = ref(false);
+    const isNumberPositive = ref(false);
 
     const emit = defineEmits(['action-alert']);
   
@@ -149,6 +151,14 @@
     watch(selectedBenefits, (newBenefits, oldBenefits) => {
       if (newBenefits.length > 0) {
         isAtLeastOneChecked.value = false;
+      }
+    });
+
+    watch(numberOfLeaves, (newValue) => {
+      if (newValue < 0) {
+        isNumberPositive.value = true;
+      } else {
+        isNumberPositive.value = false;
       }
     });
 
@@ -174,13 +184,18 @@
         return;
       }
 
+      if(numberOfLeaves.value < 0){
+        isNumberPositive.value = true;
+        return;
+      }
+
       if (selectedBenefits.value.length > 0) {
           const regularEmp = {
             id: props.empDetails.id,
-            firstName: firstName.value,
-            lastName: lastName.value,
+            first_name: firstName.value,
+            last_name: lastName.value,
             email: email.value,
-            numberOfLeaves: parseInt(numberOfLeaves.value),
+            number_of_leaves: parseInt(numberOfLeaves.value),
             benefits: selectedBenefits.value,
             type: empType.value
           }
@@ -191,14 +206,14 @@
       } else {
         const contractEmp = {
           id: props.empDetails.id,
-          firstName: firstName.value,
-          lastName: lastName.value,
+          first_name: firstName.value,
+          last_name: lastName.value,
           email: email.value,
-          contractEndDate: contractEndDate.value,
+          contract_end_date: contractEndDate.value,
           project: project.value,
           type: empType.value
         }
-  
+   
         employeeStore.editEmployee(props.empDetails.id, contractEmp)  
         emit('action-alert', "Updated")
       }
@@ -207,17 +222,17 @@
     }
 
     const getData = () => {
-      firstName.value = props.empDetails.firstName;
-      lastName.value = props.empDetails.lastName;
+      firstName.value = props.empDetails.first_name;
+      lastName.value = props.empDetails.last_name;
       email.value = props.empDetails.email;
       empType.value = props.empDetails.type;
 
       if(props.empDetails.type == "regular"){
-        numberOfLeaves.value = props.empDetails.numberOfLeaves;
+        numberOfLeaves.value = props.empDetails.number_of_leaves;
         selectedBenefits.value = props.empDetails.benefits;
 
       }else{
-        contractEndDate.value = props.empDetails.contractEndDate;
+        contractEndDate.value = props.empDetails.contract_end_date;
         project.value = props.empDetails.project;
       }
     }

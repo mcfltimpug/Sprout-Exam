@@ -50,6 +50,7 @@
         <div class="row mt-3" v-if="isRegular">
           <div class="col">
             <MDBInput label="Number of Leaves" size="lg" type="number" v-model="numberOfLeaves" required />
+            <p class="text-danger fst-italic small" v-if="isNumberPositive" >Please input positive numbers only.</p>
           </div>
         </div>
         <div class="row mt-3" v-if="isRegular">
@@ -124,6 +125,7 @@
   //for radio and checkbox validation
   const isTypeSelected = ref(false);
   const isAtLeastOneChecked = ref(false);
+  const isNumberPositive = ref(false);
 
   //alert
   const emit = defineEmits(['show-alert']);
@@ -147,6 +149,14 @@
     if (newBenefits.length > 0) {
       isAtLeastOneChecked.value = false;
     }
+  });
+
+  watch(numberOfLeaves, (newValue) => {
+      if (newValue < 0) {
+        isNumberPositive.value = true;
+      } else {
+        isNumberPositive.value = false;
+      }
   });
 
   const clearForm = () => {
@@ -179,13 +189,18 @@
       isAtLeastOneChecked.value = true;
       return;
     }
+    
+    if(numberOfLeaves.value < 0){
+        isNumberPositive.value = true;
+        return;
+    }
 
     if (selectedBenefits.value.length > 0) {
         const regularEmp = {
-          firstName: firstName.value,
-          lastName: lastName.value,
+          first_name: firstName.value,
+          last_name: lastName.value,
           email: email.value,
-          numberOfLeaves: parseInt(numberOfLeaves.value),
+          number_of_leaves: parseInt(numberOfLeaves.value),
           benefits: selectedBenefits.value,
           type: empType.value
         }
@@ -195,10 +210,10 @@
       }
     } else {
       const contractEmp = {
-        firstName: firstName.value,
-        lastName: lastName.value,
+        first_name: firstName.value,
+        last_name: lastName.value,
         email: email.value,
-        contractEndDate: contractEndDate.value,
+        contract_end_date: contractEndDate.value,
         project: project.value,
         type: empType.value
       }

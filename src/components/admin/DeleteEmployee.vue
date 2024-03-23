@@ -51,7 +51,7 @@
         empDetails: Object
     });
 
-    const fullName = computed(() => props.empDetails.firstName + " " + props.empDetails.lastName)
+    const fullName = computed(() => props.empDetails.first_name + " " + props.empDetails.last_name)
 
     const headerBgGradient = computed(() => {
         if (props.empDetails.type == "regular") {
