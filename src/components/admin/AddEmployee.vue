@@ -182,10 +182,10 @@
 
     if (selectedBenefits.value.length > 0) {
         const regularEmp = {
-          firstName: firstName.value,
-          lastName: lastName.value,
+          first_name: firstName.value,
+          last_name: lastName.value,
           email: email.value,
-          numberOfLeaves: parseInt(numberOfLeaves.value),
+          number_of_leaves: parseInt(numberOfLeaves.value),
           benefits: selectedBenefits.value,
           type: empType.value
         }
@@ -195,10 +195,10 @@
       }
     } else {
       const contractEmp = {
-        firstName: firstName.value,
-        lastName: lastName.value,
+        first_name: firstName.value,
+        last_name: lastName.value,
         email: email.value,
-        contractEndDate: contractEndDate.value,
+        contract_end_date: contractEndDate.value,
         project: project.value,
         type: empType.value
       }

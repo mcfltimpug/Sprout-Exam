@@ -5,128 +5,73 @@ import {
    ref,
    onMounted
 } from 'vue'
+import axios from 'axios';
 
 
-export const useEmployeeStore = defineStore('employee', () => {
+export const useEmployeeStore = defineStore('employees', () => {
+
    const employees = ref([]);
 
-   const storeLocalEmployees = () => {
+   const getAllEmployees = async() => {
       try {
-         const existingEmployees = localStorage.getItem('currentEmployees');
-
-         if (!existingEmployees) {
-            const localEmployees = [{
-                  id: 1,
-                  firstName: "Christine Faith",
-                  lastName: "Timpug",
-                  email: "cfl.timpug@gmail.com",
-                  numberOfLeaves: 10,
-                  benefits: ["HMO", "Holiday Pay", "Gov Contributions"],
-                  type: "regular"
-               },
-               {
-                  id: 2,
-                  firstName: "Juan",
-                  lastName: "Villanueva",
-                  email: "juanvillanueva@gmail.com",
-                  contractEndDate: "2024-05-25",
-                  project: "Empowr",
-                  type: "contractual"
-               },
-               {
-                  id: 3,
-                  firstName: "Mikaela",
-                  lastName: "Dela Cruz",
-                  email: "mikaydelacruz@gmail.com",
-                  numberOfLeaves: 14,
-                  benefits: ["HMO", "Holiday Pay"],
-                  type: "regular"
-               }
-            ]
-            localStorage.setItem('currentEmployees', JSON.stringify(localEmployees));
-         }
-
-      } catch (error) {
-         console.error("Error while storing employees: ", error);
-      }
-
-   }
-
-   const getAllEmployees = () => {
-      try {
-         const employeesFromDB = JSON.parse(localStorage.getItem('currentEmployees'));
-
-         if (employeesFromDB.length > 0) {
-            employees.value = employeesFromDB;
-         }
+         const response = await axios.get("http://localhost:8000/employees");
+         employees.value = response.data;
       } catch (error) {
          console.error("Error while fetching employees: ", error);
       }
    }
 
-   const generateUniqueId = (employees) => {
-      if (employees.length === 0) {
-         return 1;
-      }
-
-      const highestId = employees.reduce((maxId, employee) => {
-         return Math.max(maxId, parseInt(employee.id));
-      }, 0);
-
-      return highestId + 1;
-   };
-
-
-   const addEmployee = (newEmployee) => {
+   const addEmployee = async (newEmployee) => {
       try {
-         const existingEmployees = JSON.parse(localStorage.getItem('currentEmployees')) || [];
+         //create id
+         const response = await axios.get("http://localhost:8000/employees");
+         const allEmployees = response.data;
+         let highestID = 0;
+         allEmployees.forEach(employee => {
+            if (employee.id > highestID){
+               highestID = employee.id;
+            }
+         })
 
-         const newEmployeeId = generateUniqueId(existingEmployees);
-         newEmployee.id = newEmployeeId;
-
-         existingEmployees.push(newEmployee);
-         localStorage.setItem('currentEmployees', JSON.stringify(existingEmployees));
-
-         employees.value = existingEmployees;
-         console.log("Employee Added Successfully!");
+         // data with added id
+         newEmployee.id = highestID + 1;
+         await axios.post("http://localhost:8000/employees", newEmployee)
+         employees.value.push(newEmployee);
+         console.log("Employee Added Successfully");
 
       } catch (error) {
          console.error("Error while adding employee: ", error);
       }
    };
 
-   const editEmployee = (employeeId, updatedEmployee) => {
+   const editEmployee = async (employeeId, employeeData) => {
       try {
-         const existingEmployees = JSON.parse(localStorage.getItem('currentEmployees')) || [];
+         await axios.put(`http://localhost:8000/employees/${employeeId}`, employeeData);
 
-         const indexToEdit = existingEmployees.findIndex(emp => emp.id === employeeId);
+         const index = employees.value.findIndex(employee => employee.id === employeeId);
 
-         if (indexToEdit !== -1) {
-            existingEmployees[indexToEdit] = updatedEmployee;
-            localStorage.setItem('currentEmployees', JSON.stringify(existingEmployees));
-            employees.value = existingEmployees;
-            console.log("Employee Edited Successfully!");
+         if (index !== -1) {
+            employees.value[index] = employeeData;
+            console.log("Employee Edited Successfully");
          } else {
-            console.log("Employee not found!");
+            console.error("Employee Not Found");
          }
       } catch (error) {
          console.error("Error while editing employee: ", error);
       }
    };
 
-   const deleteEmployee = (employeeId) => {
+   const deleteEmployee = async (employeeId) => {
       try {
-         const existingEmployees = JSON.parse(localStorage.getItem('currentEmployees')) || [];
-
-         const indexToDelete = existingEmployees.findIndex(emp => emp.id === employeeId);
-
-         if (indexToDelete !== -1) {
-            existingEmployees.splice(indexToDelete, 1);
-            localStorage.setItem('currentEmployees', JSON.stringify(existingEmployees));
-            employees.value = existingEmployees;
-            console.log("Employee Deleted Successfully!");
+         await axios.delete(`http://localhost:8000/employees/${employeeId}`);
+   
+         const index = employees.value.findIndex(employee => employee.id === employeeId);
+         
+         if (index !== -1) {
+            const deletedEmployee = employees.value.splice(index, 1)[0];
+            console.log("Employee deleted successfully: ", deletedEmployee);
          } else {
-            console.log("Employee not found!");
+            console.error("Employee not found in the store.");
          }
       } catch (error) {
          console.error("Error while deleting employee: ", error);
@@ -134,16 +79,15 @@ export const useEmployeeStore = defineStore('employee', () => {
    };
 
    onMounted(() => {
-      storeLocalEmployees();
-      getAllEmployees();
-   });
-
+      getAllEmployees()
+   })
+   
    return {
       employees,
       getAllEmployees,
       addEmployee,
-      deleteEmployee,
-      editEmployee
+      editEmployee,
+      deleteEmployee
    };
 
 });

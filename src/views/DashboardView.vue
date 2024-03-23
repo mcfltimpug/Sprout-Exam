@@ -11,10 +11,10 @@
         <div class="row my-3">
             <nav aria-label="breadcrumb">
                 <MDBBreadcrumb class="mx-auto text-center d-flex justify-content-center fw-bold custom-filter">
-                    <MDBBreadcrumbItem class="hover-filter" @click="filterEmployees('all')">All</MDBBreadcrumbItem>
-                    <MDBBreadcrumbItem class="hover-filter" @click="filterEmployees('regular')">Regulars
+                    <MDBBreadcrumbItem class="hover-filter" @click="filterByType(null)">All</MDBBreadcrumbItem>
+                    <MDBBreadcrumbItem class="hover-filter" @click="filterByType('regular')">Regulars
                     </MDBBreadcrumbItem>
-                    <MDBBreadcrumbItem class="hover-filter" @click="filterEmployees('contractual')">Contractuals
+                    <MDBBreadcrumbItem class="hover-filter" @click="filterByType('contractual')">Contractuals
                     </MDBBreadcrumbItem>
                 </MDBBreadcrumb>
             </nav>
@@ -26,8 +26,8 @@
             </div>
         </div>
 
-        <div class="row gap-3 gap-md-0">
-            <div class="col-12 col-md-6 col-lg-4 mb-3" v-for="employee in paginatedEmployees" :key="employee.id">
+        <div class="row gap-3 gap-md-0" style="min-height: 500px;" >
+            <div class="col-12 col-md-6 col-lg-4 mb-3" v-for="employee in filteredEmployees" :key="employee.id">
                 <Employee :employee="employee" @show-alert="handleAlert" />
             </div>
             <div class="text-center pt-5 fst-italic" style="height: 400px" v-if="isEmpty">
@@ -38,13 +38,10 @@
         <div class="row mt-3">
             <nav aria-label="Page navigation example" class="mx-auto">
                 <MDBPagination class="mx-auto d-flex justify-content-center">
-                    <MDBPageNav prev @click.prevent="currentPage > 1 ? currentPage-- : currentPage"></MDBPageNav>
-                    <MDBPageItem v-for="page in totalPages" :key="page" :active="page === currentPage"
-                        @click="currentPage = page">{{ page }}</MDBPageItem>
-                    <MDBPageNav next @click.prevent="
-              currentPage < totalPages ? currentPage++ : currentPage
-            "></MDBPageNav>
-                </MDBPagination>
+                <MDBPageNav prev :disabled="currentPage === 1" @click.prevent="goToPage(currentPage - 1)"></MDBPageNav>
+                <MDBPageItem v-for="page in totalPages" :key="page" :active="page === currentPage" @click="goToPage(page)">{{ page }}</MDBPageItem>
+                <MDBPageNav next :disabled="currentPage === totalPages" @click.prevent="goToPage(currentPage + 1)"></MDBPageNav>
+            </MDBPagination>
             </nav>
         </div>
     </main>
@@ -67,6 +64,7 @@
         MDBPageItem,
         MDBBreadcrumb,
         MDBBreadcrumbItem,
+        MDBNavbar
     } from "mdb-vue-ui-kit";
     import {
         useEmployeeStore
@@ -74,53 +72,60 @@
 
     const employeeStore = useEmployeeStore();
     const allEmployees = ref();
-    const isEmpty = ref(false);
-    const filteredEmployees = ref([]);
-    const filterType = ref("all");
-
+    const selectedType = ref(null);
+    const isEmpty = computed(() => {
+        return !filteredEmployees.value || filteredEmployees.value.length === 0;
+    });
     const isSuccessful = ref(false);
     const adminAction = ref("");
+    const filteredCount = ref(0);
 
-    const currentPage = ref(1);
-    const itemsPerPage = 6;
+    const employeesPerPage = 6;
+    let currentPage = ref(1);
 
-    const totalPages = computed(() =>
-        Math.ceil(filteredEmployees.value.length / itemsPerPage)
-    );
-
-    const paginatedEmployees = computed(() => {
-        const startIndex = (currentPage.value - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        return filteredEmployees.value.slice(startIndex, endIndex);
-    });
-
-    watch(() => employeeStore.employees,(emps) => {
-            allEmployees.value = emps;
-            filterEmployees("all");
-    });
-
-    watch(() => allEmployees.value,(employees) => {
-            isEmpty.value = employees.length === 0;
-    });
-
-    watch(() => filterType.value,(type) => {
-            filterEmployees(type);
-    });
-
-    watch(() => allEmployees.value,
-        (employees) => {
-            isEmpty.value = employees.length === 0;
-    });
-
-    const filterEmployees = (type) => {
-        if (type === "all") {
-            filteredEmployees.value = allEmployees.value;
-        } else {
-            filteredEmployees.value = allEmployees.value.filter(
-                (employee) => employee.type === type
-            );
-        }
+    watch(selectedType, () => {
         currentPage.value = 1;
+    });
+
+    watch(() => employeeStore.employees, (emps) => {
+        allEmployees.value = emps;
+
+    });
+
+    const filterByType = (type) => {
+        selectedType.value = type;
+    };
+
+    const filteredEmployees = computed(() => {
+        if (!allEmployees.value) return [];
+        
+        let filtered = allEmployees.value;
+        if (selectedType.value) {
+            filtered = filtered.filter(employee => employee.type === selectedType.value);
+        }
+
+        filteredCount.value = filtered.length;
+
+        const startIndex = (currentPage.value - 1) * employeesPerPage;
+        const endIndex = startIndex + employeesPerPage;
+
+        return filtered.slice(startIndex, endIndex);
+    });
+
+    const totalPages = computed(() => {
+        if (!allEmployees.value) return 0;
+       const count = selectedType.value ? filteredCount.value : allEmployees.value.length;
+        return Math.ceil(count / employeesPerPage);
+    });
+
+    const goToPage = (page) => {
+        if (page >= 1 && page <= totalPages.value) {
+            currentPage.value = page;
+        } else if (page < 1) {
+            currentPage.value = 1;
+        } else {
+            currentPage.value = totalPages.value;
+        }
     };
 
     const handleAlert = (action) => {

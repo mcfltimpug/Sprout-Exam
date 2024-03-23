@@ -30,14 +30,14 @@
                 <div class="row">
                     <div class="col">
                         <MDBInput inputGroup="lg" :formOutline="false" wrapperClass="mb-3"
-                            v-model="empDetails.firstName" readonly>
+                            v-model="empDetails.first_name" readonly>
                             <template #prepend>
                                 <span class="input-group-text" id="inputGroup-sizing-lg">First Name</span>
                             </template>
                         </MDBInput>
                     </div>
                     <div class="col">
-                        <MDBInput inputGroup="lg" :formOutline="false" wrapperClass="mb-3" v-model="empDetails.lastName"
+                        <MDBInput inputGroup="lg" :formOutline="false" wrapperClass="mb-3" v-model="empDetails.last_name"
                             readonly>
                             <template #prepend>
                                 <span class="input-group-text" id="inputGroup-sizing-lg">Last Name</span>
@@ -65,7 +65,7 @@
                 <div class="row mt-3" v-if="isRegular">
                     <div class="col">
                         <MDBInput inputGroup="lg" :formOutline="false" wrapperClass="mb-3"
-                            v-model="empDetails.numberOfLeaves" readonly>
+                            v-model="empDetails.number_of_leaves" readonly>
                             <template #prepend>
                                 <span class="input-group-text" id="inputGroup-sizing-lg">Number of Leaves</span>
                             </template>
@@ -85,7 +85,7 @@
                 <div class="row mt-3" v-if="isRegular == false">
                     <div class="col">
                         <MDBInput inputGroup="lg" :formOutline="false" wrapperClass="mb-3"
-                            v-model="empDetails.contractEndDate" readonly>
+                            v-model="empDetails.contract_end_date" readonly>
                             <template #prepend>
                                 <span class="input-group-text" id="inputGroup-sizing-lg">Contract End Date</span>
                             </template>
@@ -136,7 +136,7 @@
         return props.empDetails.benefits.join(', ')
     })
 
-    const fullName = computed(() => props.empDetails.firstName + " " + props.empDetails.lastName)
+    const fullName = computed(() => props.empDetails.first_name + " " + props.empDetails.last_name)
 
     const isRegular = ref(false);
 

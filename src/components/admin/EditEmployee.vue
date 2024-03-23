@@ -177,10 +177,10 @@
       if (selectedBenefits.value.length > 0) {
           const regularEmp = {
             id: props.empDetails.id,
-            firstName: firstName.value,
-            lastName: lastName.value,
+            first_name: firstName.value,
+            last_name: lastName.value,
             email: email.value,
-            numberOfLeaves: parseInt(numberOfLeaves.value),
+            number_of_leaves: parseInt(numberOfLeaves.value),
             benefits: selectedBenefits.value,
             type: empType.value
           }
@@ -191,14 +191,14 @@
       } else {
         const contractEmp = {
           id: props.empDetails.id,
-          firstName: firstName.value,
-          lastName: lastName.value,
+          first_name: firstName.value,
+          last_name: lastName.value,
           email: email.value,
-          contractEndDate: contractEndDate.value,
+          contract_end_date: contractEndDate.value,
           project: project.value,
           type: empType.value
         }
-  
+   
         employeeStore.editEmployee(props.empDetails.id, contractEmp)  
         emit('action-alert', "Updated")
       }
@@ -207,17 +207,17 @@
     }
 
     const getData = () => {
-      firstName.value = props.empDetails.firstName;
-      lastName.value = props.empDetails.lastName;
+      firstName.value = props.empDetails.first_name;
+      lastName.value = props.empDetails.last_name;
       email.value = props.empDetails.email;
       empType.value = props.empDetails.type;
 
       if(props.empDetails.type == "regular"){
-        numberOfLeaves.value = props.empDetails.numberOfLeaves;
+        numberOfLeaves.value = props.empDetails.number_of_leaves;
         selectedBenefits.value = props.empDetails.benefits;
 
       }else{
-        contractEndDate.value = props.empDetails.contractEndDate;
+        contractEndDate.value = props.empDetails.contract_end_date;
         project.value = props.empDetails.project;
       }
     }
