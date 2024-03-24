@@ -29,14 +29,12 @@
     useRouter
   } from "vue-router";
 
-  const {
-    logoutAdmin
-  } = useAdminStore();
+  const adminStore = useAdminStore();
   const router = useRouter();
 
   const logout = () => {
-    logoutAdmin();
-    const isLoggedIn = JSON.parse(localStorage.getItem('isAuthenticated'));
+    adminStore.logoutAdmin();
+    const isLoggedIn = adminStore.isAuthenticated;
 
     if (isLoggedIn == false) {
       console.log("Admin Logged Out!")

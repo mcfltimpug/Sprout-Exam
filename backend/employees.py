@@ -13,6 +13,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class Admin(BaseModel):
+    username: str
+    password: str
+
 class Employee(BaseModel):
     id: int
     first_name: str
@@ -30,11 +34,20 @@ class ContractualEmployee(Employee):
 
 employees = [
     ContractualEmployee(id=1, first_name="Alice", last_name="Smith", email="alice@example.com", contract_end_date="2024-12-31", project="Project A", type="contractual"),
-    ContractualEmployee(id=2, first_name="Bob", last_name="Brown", email="bob@example.com", contract_end_date="2024-10-15", project="Project B", type="contractual"),
-    RegularEmployee(id=3, first_name="John", last_name="Doe", email="john@example.com", number_of_leaves=20, benefits=["health insurance", "paid time off"], type="regular"),
-    RegularEmployee(id=4, first_name="Jane", last_name="Doe", email="jane@example.com", number_of_leaves=15, benefits=["retirement plan"], type="regular"),
+    RegularEmployee(id=2, first_name="John", last_name="Doe", email="john@example.com", number_of_leaves=20, benefits=["Gov Contributions", "Training"], type="regular"),
+    ContractualEmployee(id=3, first_name="Bob", last_name="Brown", email="bob@example.com", contract_end_date="2024-10-15", project="Project B", type="contractual"),
+    RegularEmployee(id=4, first_name="Jane", last_name="Doe", email="jane@example.com", number_of_leaves=15, benefits=["HMO", "Holiday Pay"], type="regular"),
 ]
 
+#Login endpoint
+@app.post("/login")
+def login(admin: Admin):
+    if admin.username == "admin" and admin.password == "password":
+        return {"message": "Login Successful"}
+    else:
+        raise HTTPException(status_code=401, detail="Invalid username or password!")
+    
+#CRUD endpoints
 @app.get("/employees")
 def get_employees(type: Optional[str] = Query(None, description="Filter employees by type")):
   if type is None:

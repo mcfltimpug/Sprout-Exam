@@ -30,24 +30,18 @@ const router = createRouter({
   ]
 });
 
-router.beforeEach((to, from, next) => {
-  const isLoggedIn = localStorage.getItem('isAuthenticated') === 'true';
 
-  if (!isLoggedIn && to.meta.requiresAuth) {
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = localStorage.getItem('isAuthenticated');
+
+  if (to.meta.requiresAuth && !isLoggedIn) {
     next({ name: 'login' });
-  } else {
-    next();
-  }
-});
-
-router.beforeEach((to, from, next) => {
-  const isLoggedIn = localStorage.getItem('isAuthenticated') === 'true';
-
-  if (isLoggedIn && to.meta.requiresGuest) {
+  } else if (to.meta.requiresGuest && isLoggedIn) {
     next({ name: 'dashboard' });
   } else {
     next();
   }
 });
+
 
 export default router;
